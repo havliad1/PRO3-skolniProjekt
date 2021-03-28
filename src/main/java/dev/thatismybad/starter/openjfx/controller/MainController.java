@@ -29,7 +29,7 @@ public class MainController implements Initializable {
             new Produkt(6,"tofu", 22.16)
 
     );
-
+    // okok
 
     @FXML
     private TableView wholeTable;
