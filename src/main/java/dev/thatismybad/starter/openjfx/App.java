@@ -19,6 +19,7 @@ public class App extends Application {
         // load of main.fxml
         Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
         stage.setScene(new Scene(root));
+        stage.setResizable(true);
         stage.setTitle("Starter JavaFX project");
         stage.show();
     }

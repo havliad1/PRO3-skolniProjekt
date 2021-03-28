@@ -1,16 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="dev.thatismybad.starter.openjfx.controller.MainController">
-   <children>
-      <Button fx:id="button" layoutX="274.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#clickMeButton"
-              text="Click me!"/>
-      <Label layoutX="244.0" layoutY="156.0" text="OpenJFX starter project."/>
-      <Label fx:id="counterLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="224.0" layoutY="228.0"
-             prefHeight="17.0" prefWidth="169.0" text="You clicked on me 0 times." textAlignment="CENTER"/>
-   </children>
-</AnchorPane>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<TabPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.thatismybad.starter.openjfx.controller.MainController">
+   <tabs>
+      <Tab text="Seznam">
+         <content>
+            <AnchorPane prefHeight="400.0" prefWidth="477.0" style="-fx-background-color: lightgrey;">
+               <children>
+                  <TableView fx:id="wholeTable" layoutX="1.0" layoutY="19.0" prefHeight="362.0" prefWidth="420.0">
+                    <columns>
+                      <TableColumn fx:id="clID" prefWidth="93.0" text="ID" />
+                      <TableColumn fx:id="clDruh" prefWidth="216.0" text="Druh" />
+                        <TableColumn fx:id="clVaha" prefWidth="110.0" text="Váha" />
+                    </columns>
+                  </TableView>
+                  <VBox layoutX="422.0" prefHeight="400.0" prefWidth="177.0" style="-fx-background-color: grey;">
+                     <children>
+                        <Button mnemonicParsing="false" onMouseClicked="#odeber" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #ff4d4d; -fx-border-color: black;" text="Odebrat" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets left="40.0" right="40.0" top="50.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Button>
+                        <TextField fx:id="txtRemoveBarcode">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Button mnemonicParsing="false" onMouseClicked="#removeWithBarcode" text="Odebrání čárovým kódem">
+                           <VBox.margin>
+                              <Insets left="13.0" top="9.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+      <Tab text="Detail">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView layoutX="12.0" layoutY="14.0" prefHeight="376.0" prefWidth="442.0">
+                    <columns>
+                      <TableColumn prefWidth="340.0" text="Druh" />
+                      <TableColumn prefWidth="101.0" text="Váha" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="Výrobky">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="wholeTable1" prefHeight="362.0" prefWidth="420.0">
+                     <columns>
+                        <TableColumn fx:id="clDruh1" prefWidth="326.0" text="Výrobek" />
+                        <TableColumn fx:id="clVaha1" prefWidth="89.0" text="Počet" />
+                     </columns>
+                  </TableView>
+                  <VBox layoutX="420.0" prefHeight="400.0" prefWidth="177.0" style="-fx-background-color: grey;">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #ff3333; -fx-border-color: black;" text="Odebrat" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets left="40.0" right="40.0" top="50.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Button>
+                        <TextField>
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="PřidáníMasa">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="423.0" layoutY="58.0" mnemonicParsing="false" onMouseClicked="#addMeat" prefHeight="55.0" prefWidth="135.0" style="-fx-border-color: green;" text="Přidat">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Button>
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="47.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black;" text="ID">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="85.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black;" text="Druh">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="121.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black;" text="Váha">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <TextField fx:id="txtID" layoutX="132.0" layoutY="44.0" prefHeight="28.0" prefWidth="206.0" style="-fx-border-color: black;" />
+                  <TextField fx:id="txtDruh" layoutX="132.0" layoutY="81.0" prefHeight="28.0" prefWidth="206.0" style="-fx-border-color: black;" />
+                  <TextField fx:id="txtVaha" layoutX="132.0" layoutY="117.0" prefHeight="28.0" prefWidth="206.0" style="-fx-border-color: black;" />
+                  <Separator layoutX="-1.0" layoutY="166.0" prefHeight="1.0" prefWidth="599.0" />
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="17.0" prefWidth="311.0" style="-fx-border-color: grey;" text="Manuální přidání položky">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="181.0" prefHeight="17.0" prefWidth="311.0" style="-fx-border-color: grey;" text="Automatické přidání položky">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Text layoutX="25.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Označte prosím textové pole níže a oskenujte čárový kód pomocí čtečky. Pokud jste se skenováním spokojeni, stiskněte tlačítko Přidat" wrappingWidth="262.13671875" />
+                  <TextField fx:id="txtBarcode" layoutX="25.0" layoutY="273.0" onKeyPressed="#BarcodeToText" prefHeight="25.0" prefWidth="315.0" />
+                  <Button layoutX="423.0" layoutY="230.0" mnemonicParsing="false" onMouseClicked="#BarcodeToText" prefHeight="55.0" prefWidth="135.0" style="-fx-border-color: green;" text="Skenovat">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Button>
+                  <Label fx:id="lblDruh" alignment="CENTER" layoutX="118.0" layoutY="308.0" prefHeight="36.0" prefWidth="225.0" style="-fx-border-color: black;">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
+                  <Label fx:id="lblVaha" alignment="CENTER" layoutX="118.0" layoutY="347.0" prefHeight="37.0" prefWidth="225.0" style="-fx-border-color: black;">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="308.0" prefHeight="36.0" prefWidth="85.0" style="-fx-border-color: black;" text="Druh:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="348.0" prefHeight="36.0" prefWidth="84.0" style="-fx-border-color: black;" text="Váha:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Button layoutX="423.0" layoutY="308.0" mnemonicParsing="false" onMouseClicked="#addBarcodeMeat" prefHeight="55.0" prefWidth="135.0" style="-fx-border-color: green;" text="Přidat">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Button>
+               </children></AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="PřidáníVýrobku">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+         </content>
+      </Tab>
+   </tabs>
+</TabPane>

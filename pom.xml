@@ -10,8 +10,8 @@
 
     <properties>
         <!--version settings - Java and JavaFX version may be different -->
-        <java-version>14</java-version>
-        <javafx-version>15</javafx-version>
+        <java-version>11</java-version>
+        <javafx-version>11</javafx-version>
 
         <javafx-build-plugin-version>0.0.4</javafx-build-plugin-version>
         <maven-compiler-plugin-version>3.8.0</maven-compiler-plugin-version>
