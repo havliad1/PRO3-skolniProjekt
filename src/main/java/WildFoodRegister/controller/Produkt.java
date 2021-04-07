@@ -1,4 +1,4 @@
-package dev.thatismybad.starter.openjfx.controller;
+package WildFoodRegister.controller;
 
 public class Produkt {
     private int ID;

@@ -46,7 +46,7 @@
                 <version>${javafx-build-plugin-version}</version>
                 <configuration>
                     <!--path to main class including package structure-->
-                    <mainClass>dev.thatismybad.starter.openjfx.App</mainClass>
+                    <mainClass>WildFoodRegister.App</mainClass>
                 </configuration>
             </plugin>
 

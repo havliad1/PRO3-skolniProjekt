@@ -1,4 +1,4 @@
-package dev.thatismybad.starter.openjfx.controller;
+package WildFoodRegister.ReadAndWrite;
 
 public class readFile {
 /*
