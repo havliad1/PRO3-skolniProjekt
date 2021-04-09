@@ -10,7 +10,7 @@
 
     <properties>
         <!--version settings - Java and JavaFX version may be different -->
-        <java-version>11</java-version>
+        <java-version>13</java-version>
         <javafx-version>11</javafx-version>
 
         <javafx-build-plugin-version>0.0.4</javafx-build-plugin-version>
@@ -28,10 +28,20 @@
             <artifactId>javafx-controls</artifactId>
             <version>${javafx-version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx-version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.23</version>
         </dependency>
 
         <!--other dependencies like JSON libs, database drivers, ...-->

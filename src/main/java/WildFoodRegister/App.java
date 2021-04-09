@@ -22,11 +22,11 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         // načtení login screenu
 
-       // Parent root1 = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-        Parent root2 = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
+        Parent root1 = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
+       // Parent root2 = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
         stage1 = new Stage();
 
-        stage1.setScene(new Scene(root2));
+        stage1.setScene(new Scene(root1));
         stage1.setResizable(false);
         stage1.setTitle("WildFood login");
         stage1.show();

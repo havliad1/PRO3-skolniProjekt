@@ -23,7 +23,7 @@ public class ConfirmBox {
             label.setText(message);
 
             Button yesButton = new Button("Ano");
-            Button noButton = new Button("Ne");
+            Button noButton = new Button("Ano");
 
             yesButton.setOnAction(e -> {
                 answer = true;

@@ -1,7 +1,7 @@
 package WildFoodRegister.controller;
 
 import WildFoodRegister.App;
-import WildFoodRegister.ReadAndWrite.DatabaseConnector;
+import WildFoodRegister.ReadAndWrite.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,11 +35,6 @@ public class LoginController {
     private PasswordField password;
 
 
-    /*
-    public void initialize(URL url, ResourceBundle resourceBundle){
-        File brandingFile = new File("")
-    }
-    */
 
 
     public void cancelButtonOnAction(ActionEvent event){
@@ -50,33 +45,19 @@ public class LoginController {
 
     public void login() {
         if (username.getText().isBlank() == false && password.getText().isBlank() == false){
-         //   validateLogin();
-            try {
-                Stage cancelLoginStage = (Stage) loginButton.getScene().getWindow();
-                Stage stage2 = new Stage();
-                Parent root2 = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
-                stage2.setScene(new Scene(root2));
-                stage2.setResizable(true);
-                stage2.setTitle("WildFood Stock Register");
-                stage2.show();
-                cancelLoginStage.close();
+            validateLogin();
 
-
-
-            }catch (Exception e){
-                System.out.println("Nepodarilo se zobrazit main okno");
-            }
 
         }
-
 
     }
 
     public void validateLogin(){
-        DatabaseConnector connectNow = new DatabaseConnector();
+        DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getConnection();
 
         String verifyLogin = "SELECT count(1) FROM Manazer WHERE Username = '" + username.getText() + "' AND Password = '" + password.getText() + "'";
+     //   String verifyLogin = "SELECT count(1) FROM Manazer WHERE Username = 'Admin' AND Password = 'Admin'";
 
         try {
 
@@ -86,12 +67,15 @@ public class LoginController {
 
             while (queryResult.next()){
                 if (queryResult.getInt(1) == 1){
+
+
+
                     try {
                         Stage cancelLoginStage = (Stage) loginButton.getScene().getWindow();
                         Stage stage2 = new Stage();
                         Parent root2 = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
                         stage2.setScene(new Scene(root2));
-                        stage2.setResizable(true);
+                        stage2.setResizable(false);
                         stage2.setTitle("WildFood Stock Register");
                         stage2.show();
                         cancelLoginStage.close();
@@ -101,6 +85,7 @@ public class LoginController {
                     }catch (Exception e){
                         System.out.println("Nepodarilo se zobrazit main okno");
                     }
+
 
 
                 } else {
@@ -114,8 +99,6 @@ public class LoginController {
             e.printStackTrace();
             e.getCause();
         }
-
-
 
 
     }
