@@ -1,12 +1,12 @@
 package WildFoodRegister.controller;
 
-public class Produkt {
+public class Surovina {
     private int ID;
     private String druh;
     public double vaha;
 
 
-    public Produkt(int ID, String druh, double vaha){
+    public Surovina(int ID, String druh, double vaha){
         this.ID = ID;
         this.druh = druh;
         this.vaha = vaha;
@@ -33,7 +33,20 @@ public class Produkt {
         return vaha;
     }
 
-    public void setVaha(int vaha) {
+    public void setVaha(double vaha) {
         this.vaha = vaha;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean isEqual= false;
+
+        if (object != null && object instanceof Surovina)
+        {
+            isEqual = (this.druh == ((Surovina) object).druh);
+        }
+
+        return isEqual;
     }
 }

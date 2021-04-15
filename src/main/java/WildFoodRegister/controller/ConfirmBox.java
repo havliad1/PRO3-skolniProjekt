@@ -15,31 +15,35 @@ public class ConfirmBox {
 
     public static boolean display(String title, String message){
 
+
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle(title);
-            window.setMinWidth(250);
+            window.setMinWidth(300);
             Label label = new Label();
             label.setText(message);
 
             Button yesButton = new Button("Ano");
-            Button noButton = new Button("Ano");
+            Button noButton = new Button("Ne");
 
             yesButton.setOnAction(e -> {
                 answer = true;
                 window.close();
+
             });
             noButton.setOnAction(e -> {
                 answer = false;
                 window.close();
+
             });
 
-            VBox layout = new VBox(10);
+            answer = false;
+
+            VBox layout = new VBox(12);
             layout.getChildren().addAll(label, yesButton, noButton);
             layout.setAlignment(Pos.CENTER);
 
 
-          //  Parent root = FXMLLoader.load(getClass().getResource("/view/ConfirmB.fxml"));
             Scene scene = new Scene(layout);
             window.setScene(scene);
             window.showAndWait();

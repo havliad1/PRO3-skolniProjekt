@@ -52,6 +52,11 @@
                   <Font size="13.0" />
                </font>
             </Button>
+            <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="34.0" layoutY="223.0" prefHeight="20.0" prefWidth="333.0" textFill="#ff0101">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </right>

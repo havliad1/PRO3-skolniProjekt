@@ -23,12 +23,12 @@ public class App extends Application {
         // načtení login screenu
 
         Parent root1 = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-       // Parent root2 = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
+
         stage1 = new Stage();
 
         stage1.setScene(new Scene(root1));
         stage1.setResizable(false);
-        stage1.setTitle("WildFood login");
+        stage1.setTitle("WildFood login v0.7");
         stage1.show();
 
 

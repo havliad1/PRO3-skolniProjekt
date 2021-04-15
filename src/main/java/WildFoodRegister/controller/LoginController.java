@@ -1,6 +1,5 @@
 package WildFoodRegister.controller;
 
-import WildFoodRegister.App;
 import WildFoodRegister.ReadAndWrite.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -18,10 +18,7 @@ import java.sql.Statement;
 
 public class LoginController {
 
-    public App app;
-
     public LoginController(){
-        this.app = new App();
 
     }
 
@@ -33,9 +30,8 @@ public class LoginController {
     private TextField username;
     @FXML
     private PasswordField password;
-
-
-
+    @FXML
+    private Label loginMessageLabel;
 
     public void cancelButtonOnAction(ActionEvent event){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -46,8 +42,8 @@ public class LoginController {
     public void login() {
         if (username.getText().isBlank() == false && password.getText().isBlank() == false){
             validateLogin();
-
-
+        } else {
+            loginMessageLabel.setText("Nesprávné jméno, nebo heslo. Prosím zkuste znovu.");
         }
 
     }
@@ -57,18 +53,14 @@ public class LoginController {
         Connection connectDB = connectNow.getConnection();
 
         String verifyLogin = "SELECT count(1) FROM Manazer WHERE Username = '" + username.getText() + "' AND Password = '" + password.getText() + "'";
-     //   String verifyLogin = "SELECT count(1) FROM Manazer WHERE Username = 'Admin' AND Password = 'Admin'";
 
         try {
 
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
 
-
             while (queryResult.next()){
                 if (queryResult.getInt(1) == 1){
-
-
 
                     try {
                         Stage cancelLoginStage = (Stage) loginButton.getScene().getWindow();
@@ -80,16 +72,12 @@ public class LoginController {
                         stage2.show();
                         cancelLoginStage.close();
 
-
-
                     }catch (Exception e){
-                        System.out.println("Nepodarilo se zobrazit main okno");
+
                     }
 
-
-
                 } else {
-
+                    loginMessageLabel.setText("Nesprávné jméno, nebo heslo. Prosím zkuste znovu.");
                 }
 
             }
@@ -100,12 +88,6 @@ public class LoginController {
             e.getCause();
         }
 
-
     }
-
-
-
-
-
 
 }

@@ -16,6 +16,7 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             databaseLink = DriverManager.getConnection(url, databaseUser, databasePassword);
+            System.out.println("Uspesne pripojen k databazi");
 
         }catch (Exception e){
             e.printStackTrace();
