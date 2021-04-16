@@ -13,26 +13,28 @@
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<TabPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WildFoodRegister.controller.MainController">
+<TabPane nodeOrientation="LEFT_TO_RIGHT" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WildFoodRegister.controller.MainController">
    <tabs>
       <Tab closable="false" text="Seznam">
          <content>
             <AnchorPane prefHeight="400.0" prefWidth="477.0" style="-fx-background-color: lightgrey;">
                <children>
-                  <TableView fx:id="wholeTable" layoutX="1.0" layoutY="19.0" prefHeight="362.0" prefWidth="420.0">
+                  <TableView fx:id="wholeTable" layoutX="1.0" layoutY="19.0" prefHeight="362.0" prefWidth="420.0" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="178.0" AnchorPane.topAnchor="19.0">
                     <columns>
                       <TableColumn fx:id="clID" prefWidth="64.0" text="ID" />
                       <TableColumn fx:id="clDruh" prefWidth="245.0" text="Druh" />
                         <TableColumn fx:id="clVaha" prefWidth="110.0" text="Váha (Kg)" />
                     </columns>
                   </TableView>
-                  <VBox layoutX="422.0" layoutY="20.0" prefHeight="361.0" prefWidth="177.0" style="-fx-background-color: grey; -fx-border-color: black;">
+                  <VBox layoutX="422.0" layoutY="20.0" prefHeight="361.0" prefWidth="177.0" style="-fx-background-color: grey; -fx-border-color: black;" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="20.0">
                      <children>
                         <TextField fx:id="txtRemoveBarcode" alignment="CENTER" prefHeight="0.0" prefWidth="135.0" promptText="čárový kód">
                            <VBox.margin>
@@ -93,12 +95,31 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
                <children>
-                  <TableView fx:id="statTable" layoutX="12.0" layoutY="14.0" prefHeight="376.0" prefWidth="442.0">
+                  <TableView fx:id="statTable" layoutX="30.0" layoutY="12.0" prefHeight="375.0" prefWidth="529.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
                     <columns>
-                      <TableColumn fx:id="statDruh" prefWidth="340.0" text="Druh" />
-                      <TableColumn fx:id="statVaha" prefWidth="101.0" text="Váha" />
+                      <TableColumn fx:id="statDruh" editable="false" prefWidth="401.0" text="Druh" />
+                      <TableColumn fx:id="statVaha" editable="false" prefWidth="136.0" text="Váha (Kg)" />
                     </columns>
                   </TableView>
+                  <Label alignment="CENTER" layoutX="36.0" layoutY="333.0" prefHeight="25.0" prefWidth="190.0" style="-fx-border-color: black;" text="Počet veškerých surovin:">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="36.0" layoutY="364.0" prefHeight="25.0" prefWidth="190.0" style="-fx-border-color: black;" text="Počet veškerých produktů:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblVysledneProdukty" alignment="CENTER" layoutX="234.0" layoutY="364.0" prefHeight="25.0" prefWidth="92.0" style="-fx-border-color: black;">
+                     <font>
+                        <Font name="System Italic" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblVysledneSuroviny" alignment="CENTER" layoutX="234.0" layoutY="333.0" prefHeight="25.0" prefWidth="92.0" style="-fx-border-color: black;">
+                     <font>
+                        <Font name="System Italic" size="14.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
         </content>
       </Tab>
@@ -326,6 +347,19 @@
                   <Separator layoutX="-8.0" layoutY="278.0" prefHeight="5.0" prefWidth="615.0" />
                </children></AnchorPane>
          </content>
+      </Tab>
+      <Tab closable="false">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="35.0" nodeOrientation="INHERIT">
+               <image>
+                  <Image url="@../Images/uzivatel.png" />
+               </image>
+            </ImageView>
+         </graphic>
+
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
       </Tab>
    </tabs>
 </TabPane>

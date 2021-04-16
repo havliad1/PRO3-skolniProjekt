@@ -66,8 +66,12 @@ public class LoginController {
                         Stage cancelLoginStage = (Stage) loginButton.getScene().getWindow();
                         Stage stage2 = new Stage();
                         Parent root2 = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+
+
+
+
                         stage2.setScene(new Scene(root2));
-                        stage2.setResizable(false);
+                        stage2.setResizable(true);
                         stage2.setTitle("WildFood Stock Register");
                         stage2.show();
                         cancelLoginStage.close();

@@ -3,7 +3,7 @@ package WildFoodRegister.controller;
 public class StatisticsWindow {
 
     public MainController mainController;
-   // public ObservableList<Surovina> listStatistiky;
+   // public ObservableList<> listStatistiky;
 
 
     public StatisticsWindow() {

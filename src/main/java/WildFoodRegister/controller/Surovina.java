@@ -13,6 +13,12 @@ public class Surovina {
 
     }
 
+    public Surovina(Surovina statistika){
+        this.ID = statistika.ID;
+        this.druh = statistika.druh;
+        this.vaha = statistika.vaha;
+    }
+
     public int getID() {
         return ID;
     }
@@ -36,7 +42,7 @@ public class Surovina {
     public void setVaha(double vaha) {
         this.vaha = vaha;
     }
-
+/*
     @Override
     public boolean equals(Object object)
     {
@@ -49,4 +55,6 @@ public class Surovina {
 
         return isEqual;
     }
+
+ */
 }

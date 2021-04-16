@@ -31,84 +31,45 @@ public class MainController implements Initializable {
     public ObservableList<Produkt> listProduktu = FXCollections.observableArrayList();
     public ObservableList<Surovina> listStatistiky = FXCollections.observableArrayList();
 
+
+
     public void statisticsGenerator() {
+    /*
+        for (Surovina statistika : listSurovin) {
+            listStatistiky.add(new Surovina(statistika));
+        }
 
+     */
 
-        Surovina surovinaStatistiky;
+        Surovina statistika;
+
         boolean statKontrola = false;
 
 
-
-
-        if (listStatistiky.size() == 0){
-            listStatistiky.add(listSurovin.get(15));
-
-        }
-
         for (int i = 0; i < listSurovin.size(); i++) {
-            surovinaStatistiky = listSurovin.get(i);
+
+            // vybírá po jednom položky z listu surovin
+
+            statistika = listSurovin.get(i);
 
             for (int j = 0; j < listStatistiky.size(); j++) {
-               // System.out.println(surovinaStatistiky);
-               // System.out.println();
-                if (surovinaStatistiky.getDruh().equals(listStatistiky.get(j).getDruh()) && surovinaStatistiky.getVaha() == listStatistiky.get(j).getVaha()){
 
-                    listStatistiky.get(j).setVaha(listStatistiky.get(j).getVaha() + surovinaStatistiky.getVaha());
+                //porovnává položku z listu surovin se všemi položkami z listu statistiky ( po jednom)
+
+                if (statistika.getDruh().equals(listStatistiky.get(j).getDruh())){
+
+                    listStatistiky.get(j).setVaha(listStatistiky.get(j).getVaha() + statistika.getVaha());
                     statTable.refresh();
 
                     statKontrola = true;
-
-                    break;
-
-                }
-
-                if (statKontrola == false){
-                    listStatistiky.add(surovinaStatistiky);
                 }
             }
+            if (statKontrola == false){
 
-
-
-        }
-
-
-        System.out.println("velikost listu statistiky je: " + listStatistiky.size());
-
-
-
-
-
-
-
-
-
-
-        /*
-        Surovina temp = null;
-
-        try {
-            for (int i = 0; i < listSurovin.size(); i++) {
-
-                temp = listSurovin.get(i);
-             //   System.out.println(temp.getDruh());
-                //listStatistiky.add(temp);
-
-                if (!listStatistiky.contains(temp)){
-                    listStatistiky.add(temp);
-                } else {
-                    for(int x = 0; x<listStatistiky.size();x++){
-                        if(listStatistiky.get(x).equals(temp)){
-                            listStatistiky.get(x).setVaha(listStatistiky.get(x).getVaha() + temp.getVaha());
-                        }
-                    }
-                }
+                listStatistiky.add(new Surovina(statistika));
             }
-
-        } catch (Exception e){
-            System.out.println("Chyba pri vygenerovani statistiky");
+            statKontrola = false;
         }
-
-         */
     }
 
     public void nacteniListu(){
@@ -133,7 +94,6 @@ public class MainController implements Initializable {
         }catch (Exception e){
 
         }
-
 
     }
 
@@ -191,6 +151,10 @@ public class MainController implements Initializable {
     private TextField txtSearchProduct;
     @FXML
     private TextField txtSearchSarze;
+    @FXML
+    private Label lblVysledneSuroviny;
+    @FXML
+    private Label lblVysledneProdukty;
 
     int id;
     String Druh;
@@ -221,6 +185,9 @@ public class MainController implements Initializable {
         statVaha.setCellValueFactory(new PropertyValueFactory<Surovina, Double>("vaha"));
 
         this.statTable.setItems(listStatistiky);
+
+        lblVysledneProdukty.setText(String.valueOf(listProduktu.size()));
+        lblVysledneSuroviny.setText(String.valueOf(listSurovin.size()));
     }
 
     public void updateProduktTable(){
