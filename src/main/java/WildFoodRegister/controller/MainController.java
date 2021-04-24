@@ -4,21 +4,19 @@ import WildFoodRegister.ReadAndWrite.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 
 
 /**
@@ -30,16 +28,16 @@ public class MainController implements Initializable {
     public ObservableList<Surovina> listSurovin = FXCollections.observableArrayList();
     public ObservableList<Produkt> listProduktu = FXCollections.observableArrayList();
     public ObservableList<Surovina> listStatistiky = FXCollections.observableArrayList();
+    private static ArrayList<Uzivatel> listUzivatele = new ArrayList<Uzivatel>();
+
+    public void pridejUzivatele(Uzivatel uzivatel){
+        listUzivatele.add(uzivatel);
+    }
+
 
 
 
     public void statisticsGenerator() {
-    /*
-        for (Surovina statistika : listSurovin) {
-            listStatistiky.add(new Surovina(statistika));
-        }
-
-     */
 
         Surovina statistika;
 
@@ -74,7 +72,6 @@ public class MainController implements Initializable {
 
     public void nacteniListu(){
 
-
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getConnection();
 
@@ -95,6 +92,28 @@ public class MainController implements Initializable {
 
         }
 
+    }
+
+    public void nacteniProduktu(){
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        try {
+            ResultSet resultSet = connectDB.createStatement().executeQuery("SELECT * FROM produkt");
+
+            while (resultSet.next()){
+                listProduktu.add(
+                        new Produkt(
+                                resultSet.getString("Nazev"),
+                                resultSet.getInt("Pocet"),
+                                resultSet.getInt("Sarze")
+                        ));
+
+            }
+
+        }catch (Exception e){
+
+        }
     }
 
     @FXML
@@ -155,12 +174,140 @@ public class MainController implements Initializable {
     private Label lblVysledneSuroviny;
     @FXML
     private Label lblVysledneProdukty;
+    @FXML
+    private Button logoffButton;
+    @FXML
+    private Label lblJmeno;
+    @FXML
+    private Label lblPrijmeni;
+    @FXML
+    private Label lblTelCislo;
+    @FXML
+    private Label lblEmail;
+    @FXML
+    private Tab registrationTab;
+    @FXML
+    private TextField txtUserName;
+    @FXML
+    private TextField txtUserLastname;
+    @FXML
+    private TextField txtTelephone;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private Label lblUserStatus;
+    @FXML
+    private  Label lblDoplnek;
+    @FXML
+    private  Label lblDoplnek2;
+    @FXML
+    private  Label lblDoplnek3;
+    @FXML
+    private  Label lblDoplnek4;
+
+
 
     int id;
     String Druh;
     String barcodeDruh;
     Double Vaha;
     String barcodeVaha;
+
+    public void updateUserTable(){
+
+        lblJmeno.setText(listUzivatele.get(0).getJmeno());
+        lblPrijmeni.setText(listUzivatele.get(0).getPrijmeni());
+        lblEmail.setText(listUzivatele.get(0).getEmail());
+        lblTelCislo.setText(String.valueOf(listUzivatele.get(0).getTelCislo()));
+
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        if (listUzivatele.get(0).getAdministrator() == 1){
+            registrationTab.setDisable(false);
+            lblDoplnek.setText("Dodavatel:");
+
+            String dodavatelJmeno = "";
+            String dodavatelPrijmeni = "";
+
+            try {
+                ResultSet resultSet = connectDB.createStatement().executeQuery("SELECT * FROM dodavatelemanazera WHERE manazerJmeno = '" + listUzivatele.get(0).getJmeno() + "'");
+
+                while (resultSet.next()){
+
+                    dodavatelJmeno = resultSet.getString("Jmeno");
+                    dodavatelPrijmeni = resultSet.getString("Prijmeni");
+                    lblDoplnek2.setText(" " + dodavatelJmeno + " " + dodavatelPrijmeni);
+
+                }
+
+            }catch (Exception e){
+
+            }
+
+
+        } else if (listUzivatele.get(0).getAdministrator() == 2){
+            registrationTab.setDisable(true);
+
+            lblDoplnek.setText("Nadřízený:");
+            lblDoplnek3.setText("Pracoviště");
+
+            String nadrizenyJmeno = "";
+            String nadrizenyPrijmeni = "";
+            String adresa = "";
+
+            try {
+                ResultSet resultSet = connectDB.createStatement().executeQuery("select * from manazerABudovaZamestnance WHERE Jmeno ='" + listUzivatele.get(0).getJmeno() + "'");
+
+                while (resultSet.next()){
+
+                    nadrizenyJmeno = resultSet.getString("manazerJmeno");
+                    nadrizenyPrijmeni = resultSet.getString("manazerPrijmeni");
+                    adresa = resultSet.getString("Adresa");
+
+                    lblDoplnek2.setText(" " + nadrizenyJmeno + " " + nadrizenyPrijmeni);
+                    lblDoplnek4.setText(" " + adresa);
+
+                }
+
+            }catch (Exception e){
+
+            }
+
+
+
+
+
+        } else if (listUzivatele.get(0).getAdministrator() == 3) {
+            registrationTab.setDisable(true);
+
+            lblDoplnek.setText("Nadřízený:");
+            lblDoplnek3.setText("Sklad č.:");
+
+            String skladCislo = "";
+            String nadrizenyJmeno = "";
+            String nadrizenyPrijmeni = "";
+
+            try {
+                ResultSet resultSet = connectDB.createStatement().executeQuery("select * from manazerASkladDelnika WHERE Jmeno = '" + listUzivatele.get(0).getJmeno() + "'");
+
+                while (resultSet.next()) {
+
+                    nadrizenyJmeno = resultSet.getString("manazerJmeno");
+                    nadrizenyPrijmeni = resultSet.getString("manazerPrijmeni");
+                    skladCislo = resultSet.getString("SkladID");
+
+                    lblDoplnek2.setText(" " + nadrizenyJmeno + " " + nadrizenyPrijmeni);
+                    lblDoplnek4.setText(" " + skladCislo);
+
+                }
+
+            } catch (Exception e) {
+
+            }
+        }
+
+    }
 
     public void updateWholeTable(){
 
@@ -173,6 +320,45 @@ public class MainController implements Initializable {
         this.wholeTable.setItems(listSurovin);
         lblID.setText(String.valueOf(idCounter()));
 
+        //zobrazeni uzivatele
+
+    }
+
+    public void vypocetStatistiky(){
+        String velikostSurovin;
+        String velikostProduktu;
+
+
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        try {
+            ResultSet resultSet = connectDB.createStatement().executeQuery("SELECT school_database.sectiSuroviny();");
+
+            while (resultSet.next()){
+
+                velikostSurovin = resultSet.getString("school_database.sectiSuroviny()");
+                lblVysledneSuroviny.setText(velikostSurovin);
+
+            }
+
+        }catch (Exception e){
+
+        }
+
+        try {
+            ResultSet resultSet = connectDB.createStatement().executeQuery("select school_database.sectiProdukty();");
+
+            while (resultSet.next()){
+
+                velikostProduktu = resultSet.getString("school_database.sectiProdukty()");
+                lblVysledneProdukty.setText(velikostProduktu);
+
+            }
+
+        }catch (Exception e){
+
+        }
 
     }
 
@@ -180,17 +366,18 @@ public class MainController implements Initializable {
 
         statisticsGenerator();
 
-
         statDruh.setCellValueFactory(new PropertyValueFactory<Surovina, String>("druh"));
         statVaha.setCellValueFactory(new PropertyValueFactory<Surovina, Double>("vaha"));
 
         this.statTable.setItems(listStatistiky);
 
-        lblVysledneProdukty.setText(String.valueOf(listProduktu.size()));
-        lblVysledneSuroviny.setText(String.valueOf(listSurovin.size()));
+        vypocetStatistiky();
+
     }
 
     public void updateProduktTable(){
+
+        nacteniProduktu();
 
         clVyrobek.setCellValueFactory(new PropertyValueFactory<Produkt, String>("vyrobek"));
         clPocet.setCellValueFactory(new PropertyValueFactory<Produkt, Double>("pocet"));
@@ -230,6 +417,8 @@ public class MainController implements Initializable {
         } else {
 
         }
+        statTable.refresh();
+        vypocetStatistiky();
     }
 
     String barcode = "";
@@ -331,6 +520,8 @@ public class MainController implements Initializable {
         lblID.setText(String.valueOf(idCounter()));
         txtDruh.setText("");
         txtVaha.setText("");
+        statTable.refresh();
+        vypocetStatistiky();
     }
 
     public void addBarcodeMeat(){
@@ -383,6 +574,9 @@ public class MainController implements Initializable {
                 txtBarcode.requestFocus();
                 lblSurovinaStatus.setTextFill(Color.web("#29ae00"));
                 lblSurovinaStatus.setText("Polozka uspesne pridana");
+
+                statTable.refresh();
+                vypocetStatistiky();
 
 
             }
@@ -511,128 +705,179 @@ public class MainController implements Initializable {
 
     public void addProductWithBarcode() {
 
-        String barcodeProdukt = "";
-        int barcodePocet = 0;
-        int barcodeSarze = 0;
-    /*
-        String barcodeProdukt = lblProdukt.getText();
-        int barcodePocet = Integer.parseInt(txtPocet.getText());
-        int barcodeSarze = Integer.parseInt(txtSarze.getText());
+        try {
 
-     */
-
-        boolean kontrola = false;
-
-        if (lblProdukt.getText().isEmpty()){
-            barcodeProdukt.equals("");
-        } else {
-            barcodeProdukt = lblProdukt.getText();
-        }
-
-        if (txtPocet.getText().isEmpty()){
-            barcodePocet = 0;
-        } else {
-            barcodePocet = Integer.parseInt(txtPocet.getText());
-        }
-
-        if (txtSarze.getText().isEmpty()){
-            barcodeSarze = 0;
-        } else {
-            barcodeSarze = Integer.parseInt(txtSarze.getText());
-        }
+            String barcodeProdukt = "";
+            int barcodePocet = 0;
+            int barcodeSarze = 0;
 
 
-        if (barcodeProdukt.equals("") && barcodePocet == 0 && barcodeSarze == 0){
+            boolean kontrola = false;
 
-            lblStatus.setText("Doplňte prosím požadované údaje");
-            lblStatus.setTextFill(Color.web("#ff4d4d"));
+            if (lblProdukt.getText().isEmpty()){
+                barcodeProdukt.equals("");
+            } else {
+                barcodeProdukt = lblProdukt.getText();
+            }
 
-        } else if (barcodeProdukt.equals("") && barcodePocet != 0 && barcodeSarze != 0) {
+            if (txtPocet.getText().isEmpty()){
+                barcodePocet = 0;
+            } else {
+                barcodePocet = Integer.parseInt(txtPocet.getText());
+            }
 
-            lblStatus.setText("Oskenujte prosím čárový kód");
-            lblStatus.setTextFill(Color.web("#ff4d4d"));
-            txtProductBarcode.requestFocus();
-
-        } else if (barcodeProdukt.equals("") && barcodePocet == 0 && barcodeSarze != 0) {
-
-            lblStatus.setText("Oskenujte prosím čárový kód a doplňte počet");
-            lblStatus.setTextFill(Color.web("#ff4d4d"));
-            txtProductBarcode.requestFocus();
-
-        } else if (!barcodeProdukt.equals("") && barcodePocet != 0 && barcodeSarze == 0){
-
-            lblStatus.setText("Doplňte prosím šarži");
-            lblStatus.setTextFill(Color.web("#ff4d4d"));
-            txtSarze.requestFocus();
-
-        } else if (!barcodeProdukt.equals("") && barcodePocet == 0 && barcodeSarze != 0){
-
-            lblStatus.setText("Doplňte prosím počet a šarži");
-            lblStatus.setTextFill(Color.web("#ff4d4d"));
-            txtPocet.requestFocus();
-
-        } else if (barcodeProdukt.equals("") && barcodePocet != 0 && barcodeSarze == 0){
-
-            lblStatus.setText("Oskenujte prosím čárový kód a doplńte šarži");
-            lblStatus.setTextFill(Color.web("#ff4d4d"));
-            txtProductBarcode.requestFocus();
-
-        } else if (!barcodeProdukt.equals("") && barcodePocet == 0 && barcodeSarze == 0) {
-
-            lblStatus.setText("Doplňte prosím počet produktu");
-            lblStatus.setTextFill(Color.web("#ff4d4d"));
-            txtPocet.requestFocus();
-
-        } else if (barcodeProdukt.equals("Neznámá položka")) {
-
-            lblStatus.setText("Chyba při oskenování, zkuste prosím znovu");
-            lblStatus.setTextFill(Color.web("#ff4d4d"));
-            txtProductBarcode.setText("");
-            txtProductBarcode.requestFocus();
-
-        } else {
-
-            if(listProduktu.size() == 0) {
-            listProduktu.add(new Produkt(barcodeProdukt, barcodePocet, barcodeSarze));
-            lblStatus.setText("Položka úspěšně přidána!");
-            lblStatus.setTextFill(Color.web("#29ae00"));
+            if (txtSarze.getText().isEmpty()){
+                barcodeSarze = 0;
+            } else {
+                barcodeSarze = Integer.parseInt(txtSarze.getText());
+            }
 
 
-             } else {
-                 for (int i = 0; i < listProduktu.size(); i++) {
+            if (barcodeProdukt.equals("") && barcodePocet == 0 && barcodeSarze == 0){
 
-                    if (listProduktu.get(i).getVyrobek().equals(barcodeProdukt) && listProduktu.get(i).getSarze() == barcodeSarze) {
+                lblStatus.setText("Doplňte prosím požadované údaje");
+                lblStatus.setTextFill(Color.web("#ff4d4d"));
 
-                        int meziPocet = listProduktu.get(i).getPocet();
-                        listProduktu.get(i).setPocet(meziPocet + barcodePocet);
-                        produktTable.refresh();
-                        kontrola = true;
-                        lblStatus.setText("Položka úspěšně přidána!");
-                        lblStatus.setTextFill(Color.web("#29ae00"));
+            } else if (barcodeProdukt.equals("") && barcodePocet != 0 && barcodeSarze != 0) {
 
-                        break;
+                lblStatus.setText("Oskenujte prosím čárový kód");
+                lblStatus.setTextFill(Color.web("#ff4d4d"));
+                txtProductBarcode.requestFocus();
 
-                        }
-                 }
-                if (kontrola == false) {
+            } else if (barcodeProdukt.equals("") && barcodePocet == 0 && barcodeSarze != 0) {
+
+                lblStatus.setText("Oskenujte prosím čárový kód a doplňte počet");
+                lblStatus.setTextFill(Color.web("#ff4d4d"));
+                txtProductBarcode.requestFocus();
+
+            } else if (!barcodeProdukt.equals("") && barcodePocet != 0 && barcodeSarze == 0){
+
+                lblStatus.setText("Doplňte prosím šarži");
+                lblStatus.setTextFill(Color.web("#ff4d4d"));
+                txtSarze.requestFocus();
+
+            } else if (!barcodeProdukt.equals("") && barcodePocet == 0 && barcodeSarze != 0){
+
+                lblStatus.setText("Doplňte prosím počet a šarži");
+                lblStatus.setTextFill(Color.web("#ff4d4d"));
+                txtPocet.requestFocus();
+
+            } else if (barcodeProdukt.equals("") && barcodePocet != 0 && barcodeSarze == 0){
+
+                lblStatus.setText("Oskenujte prosím čárový kód a doplńte šarži");
+                lblStatus.setTextFill(Color.web("#ff4d4d"));
+                txtProductBarcode.requestFocus();
+
+            } else if (!barcodeProdukt.equals("") && barcodePocet == 0 && barcodeSarze == 0) {
+
+                lblStatus.setText("Doplňte prosím počet produktu");
+                lblStatus.setTextFill(Color.web("#ff4d4d"));
+                txtPocet.requestFocus();
+
+            } else if (barcodeProdukt.equals("Neznámá položka")) {
+
+                lblStatus.setText("Chyba při oskenování, zkuste prosím znovu");
+                lblStatus.setTextFill(Color.web("#ff4d4d"));
+                txtProductBarcode.setText("");
+                txtProductBarcode.requestFocus();
+
+
+            } else {
+
+                if(listProduktu.size() == 0) {
                     listProduktu.add(new Produkt(barcodeProdukt, barcodePocet, barcodeSarze));
                     lblStatus.setText("Položka úspěšně přidána!");
                     lblStatus.setTextFill(Color.web("#29ae00"));
 
+                    DatabaseConnection connectNow = new DatabaseConnection();
+                    Connection connectDB = connectNow.getConnection();
 
-                     }
+                    try {
+
+                        CallableStatement myStmt = connectDB.prepareCall("{call vypocetID(?,?,?)}");
+                        myStmt.setString(1, barcodeProdukt);
+                        myStmt.setInt(2, barcodePocet);
+                        myStmt.setInt(3, barcodeSarze);
+/*
+                        myStmt.setString(1, "zkouska");
+                        myStmt.setInt(2, 10);
+                        myStmt.setInt(3, 1);
+
+ */
+                        myStmt.execute();
+                        System.out.println("Produkt byl uspesne pridan do databaze");
+
+
+                    }catch (Exception e){
+
+                    }
+
+
+
+                } else {
+                    for (int i = 0; i < listProduktu.size(); i++) {
+
+                        if (listProduktu.get(i).getVyrobek().equals(barcodeProdukt) && listProduktu.get(i).getSarze() == barcodeSarze) {
+
+                            int meziPocet = listProduktu.get(i).getPocet();
+                            listProduktu.get(i).setPocet(meziPocet + barcodePocet);
+                            produktTable.refresh();
+                            kontrola = true;
+                            lblStatus.setText("Položka úspěšně přidána!");
+                            lblStatus.setTextFill(Color.web("#29ae00"));
+
+                            break;
+
+                        }
+                    }
+                    if (kontrola == false) {
+                        listProduktu.add(new Produkt(barcodeProdukt, barcodePocet, barcodeSarze));
+
+                        DatabaseConnection connectNow = new DatabaseConnection();
+                        Connection connectDB = connectNow.getConnection();
+
+                        try {
+                            PreparedStatement pridej = connectDB.prepareStatement("INSERT INTO surovina (Druh, Vaha, SurovinaID, DodavatelID, SkladID) VALUES ('" + Druh + "', " + Vaha + " , " + id + ", " + 1 + ", " + 1 + ")");
+
+                            pridej.executeUpdate();
+
+                            String zkouskaPridani = "SELECT count(1) FROM surovina WHERE Druh = '" + Druh + "'";
+                            Statement statement = connectDB.createStatement();
+                            ResultSet queryResult = statement.executeQuery(zkouskaPridani);
+
+                            while (queryResult.next()) {
+                                if (queryResult.getInt(1) > 0) {
+                                    System.out.println("Polozka uspesne pridana");
+                                } else {
+                                    System.out.println("Pridani polozky se nezdarilo");
+                                }
+
+                            }
+
+                        } catch (Exception e) {
+
+                        }
+
+                        lblStatus.setText("Položka úspěšně přidána!");
+                        lblStatus.setTextFill(Color.web("#29ae00"));
+
+
+                    }
                 }
-            lblProdukt.setText("");
-            txtProductBarcode.setText("");
-            txtSarze.setText("");
-            txtPocet.setText("");
+                lblProdukt.setText("");
+                txtProductBarcode.setText("");
+                txtSarze.setText("");
+                txtPocet.setText("");
 
-            txtProductBarcode.requestFocus();
+                txtProductBarcode.requestFocus();
+                vypocetStatistiky();
+                statTable.refresh();
 
             }
 
+        } catch (Exception e){
 
-
+        }
     }
 
     public void removeProduct() {
@@ -665,6 +910,9 @@ public class MainController implements Initializable {
             }
 
         }
+
+        statTable.refresh();
+        vypocetStatistiky();
 
     }
 
@@ -756,6 +1004,67 @@ public class MainController implements Initializable {
 
     }
 
+    public void odhlasit(){
+
+        try {
+            Stage cancelMainStage = (Stage) logoffButton.getScene().getWindow();
+            Stage stage1;
+
+            Parent root1 = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
+
+            stage1 = new Stage();
+
+            stage1.setScene(new Scene(root1));
+            stage1.setResizable(false);
+            stage1.setTitle("WildFood login v0.7");
+            stage1.show();
+
+            cancelMainStage.close();
+            listUzivatele.clear();
+
+
+        }catch (Exception e){
+
+        }
+
+
+
+    }
+
+    public void addUser(){
+
+        String userName = "";
+        String userLastName = "";
+        String userEmail = "";
+        Long userTelephone;
+
+        if (!txtUserName.getText().isEmpty() && !txtUserLastname.getText().isEmpty() && !txtEmail.getText().isEmpty() && !txtTelephone.getText().isEmpty()){
+            try {
+                userName = txtUserName.getText();
+                userLastName = txtUserLastname.getText();
+                userEmail = txtUserLastname.getText();
+                userTelephone = Long.valueOf(txtTelephone.getText());
+
+                lblUserStatus.setText("Uživatel úspěšně přidán!");
+                lblUserStatus.setTextFill(Color.web("#29ae00"));
+
+                txtUserName.setText("");
+                txtUserLastname.setText("");
+                txtEmail.setText("");
+                txtTelephone.setText("");
+
+            } catch (Exception e){
+
+            }
+
+        } else {
+            lblUserStatus.setText("Prosím doplňte všechny hodnoty");
+            lblUserStatus.setTextFill(Color.web("#ff4d4d"));
+
+        }
+
+    }
+
 
 
 
@@ -765,12 +1074,13 @@ public class MainController implements Initializable {
 
         updateWholeTable();
         updateProduktTable();
+        updateUserTable();
 
         this.statisticsWindow = new StatisticsWindow();
         updateStatisticsTable();
 
 
-      //  System.out.println("Reálná velikost listu surovin je: " + listSurovin.size());
+
 
 
 

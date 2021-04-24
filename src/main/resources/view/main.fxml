@@ -16,6 +16,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
@@ -348,9 +349,70 @@
                </children></AnchorPane>
          </content>
       </Tab>
+      <Tab fx:id="registrationTab" text="Registrace uzivatele">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
+               <children>
+                  <Label alignment="CENTER" layoutX="76.0" layoutY="14.0" prefHeight="17.0" prefWidth="441.0" text="Registrace uživatele" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="10.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="38.0" layoutY="72.0" prefHeight="29.0" prefWidth="82.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Jméno:" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="470.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="50.0" layoutY="108.0" prefHeight="29.0" prefWidth="81.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Příjmení:" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="471.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="50.0" layoutY="143.0" prefHeight="29.0" prefWidth="81.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Tel. číslo" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="471.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="50.0" layoutY="178.0" prefHeight="29.0" prefWidth="80.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Email" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="472.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtUserName" alignment="CENTER" layoutX="144.0" layoutY="71.0" prefHeight="29.0" prefWidth="326.0" promptText="Jméno" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="132.0" AnchorPane.topAnchor="71.0" />
+                  <TextField fx:id="txtUserLastname" alignment="CENTER" layoutX="144.0" layoutY="108.0" prefHeight="29.0" prefWidth="325.0" promptText="Příjmení" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="133.0" />
+                  <TextField fx:id="txtTelephone" alignment="CENTER" layoutX="144.0" layoutY="143.0" prefHeight="29.0" prefWidth="325.0" promptText="Telefonní číslo" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="133.0" />
+                  <TextField fx:id="txtEmail" alignment="CENTER" layoutX="144.0" layoutY="178.0" prefHeight="29.0" prefWidth="325.0" promptText="Emailová adresa" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="133.0" />
+                  <Separator layoutX="-7.0" layoutY="44.0" prefHeight="9.0" prefWidth="618.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Label alignment="CENTER" layoutX="50.0" layoutY="337.0" prefHeight="29.0" prefWidth="79.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Status:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblUserStatus" alignment="CENTER" layoutX="144.0" layoutY="337.0" prefHeight="29.0" prefWidth="320.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Separator layoutX="8.0" layoutY="311.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutX="144.0" layoutY="260.0" mnemonicParsing="false" onAction="#addUser" prefHeight="44.0" prefWidth="327.0" text="Přidat" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="131.0">
+                     <effect>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant />
+                           </light>
+                        </Lighting>
+                     </effect>
+                  </Button>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
       <Tab closable="false">
          <graphic>
-            <ImageView fitHeight="20.0" fitWidth="35.0" nodeOrientation="INHERIT">
+            <ImageView fitHeight="25" fitWidth="25" nodeOrientation="INHERIT">
                <image>
                   <Image url="@../Images/uzivatel.png" />
                </image>
@@ -358,7 +420,91 @@
          </graphic>
 
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
+               <children>
+                  <Pane layoutX="26.0" layoutY="63.0" prefHeight="326.0" prefWidth="560.0" style="-fx-background-color: white; -fx-border-color: grey;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                     <children>
+                        <Label layoutX="15.0" layoutY="20.0" prefHeight="30.0" prefWidth="80.0" text="Jméno:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblJmeno" layoutX="110.0" layoutY="20.0" prefHeight="30.0" prefWidth="400.0">
+                           <font>
+                              <Font name="System Italic" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="15.0" layoutY="60.0" prefHeight="30.0" prefWidth="80.0" text="Příjmení:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="15.0" layoutY="100.0" prefHeight="30.0" prefWidth="80.0" text="Tel. číslo:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="15.0" layoutY="140.0" prefHeight="30.0" prefWidth="80.0" text="Email:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblDoplnek" layoutX="14.0" layoutY="190.0" prefHeight="30.0" prefWidth="108.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblPrijmeni" layoutX="110.0" layoutY="60.0" prefHeight="30.0" prefWidth="400.0">
+                           <font>
+                              <Font name="System Italic" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblTelCislo" layoutX="110.0" layoutY="100.0" prefHeight="30.0" prefWidth="400.0">
+                           <font>
+                              <Font name="System Italic" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblEmail" layoutX="110.0" layoutY="140.0" prefHeight="30.0" prefWidth="401.0">
+                           <font>
+                              <Font name="System Italic" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblDoplnek2" layoutX="111.0" layoutY="190.0" prefHeight="30.0" prefWidth="401.0">
+                           <font>
+                              <Font name="System Italic" size="18.0" />
+                           </font>
+                        </Label>
+                        <Separator layoutX="1.0" layoutY="170.0" prefHeight="14.0" prefWidth="565.0" />
+                        <Label fx:id="lblDoplnek3" layoutX="14.0" layoutY="230.0" prefHeight="30.0" prefWidth="108.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblDoplnek4" layoutX="122.0" layoutY="230.0" prefHeight="30.0" prefWidth="401.0">
+                           <font>
+                              <Font name="System Italic" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="157.0" layoutY="13.0" prefHeight="43.0" prefWidth="285.0" text="Uživatel" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="10.0">
+                     <font>
+                        <Font name="Verdana" size="36.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="logoffButton" layoutX="461.0" layoutY="13.0" mnemonicParsing="false" onMouseClicked="#odhlasit" prefHeight="41.0" prefWidth="122.0" text="Odhlásit">
+                     <effect>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant />
+                           </light>
+                        </Lighting>
+                     </effect>
+                  </Button>
+               </children></AnchorPane>
         </content>
       </Tab>
    </tabs>
