@@ -1,4 +1,4 @@
-package WildFoodRegister.ReadAndWrite;
+package WildFoodRegister.DatabaseConnection;
 
 
 import java.sql.Connection;

@@ -1,6 +1,6 @@
 package WildFoodRegister.controller;
 
-import WildFoodRegister.ReadAndWrite.DatabaseConnection;
+import WildFoodRegister.DatabaseConnection.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,8 +33,6 @@ public class MainController implements Initializable {
     public void pridejUzivatele(Uzivatel uzivatel){
         listUzivatele.add(uzivatel);
     }
-
-
 
 
     public void statisticsGenerator() {
@@ -195,6 +193,10 @@ public class MainController implements Initializable {
     @FXML
     private TextField txtEmail;
     @FXML
+    private TextField txtUsername;
+    @FXML
+    private TextField txtPassword;
+    @FXML
     private Label lblUserStatus;
     @FXML
     private  Label lblDoplnek;
@@ -204,7 +206,6 @@ public class MainController implements Initializable {
     private  Label lblDoplnek3;
     @FXML
     private  Label lblDoplnek4;
-
 
 
     int id;
@@ -273,9 +274,6 @@ public class MainController implements Initializable {
             }catch (Exception e){
 
             }
-
-
-
 
 
         } else if (listUzivatele.get(0).getAdministrator() == 3) {
@@ -543,10 +541,27 @@ public class MainController implements Initializable {
                 Connection connectDB = connectNow.getConnection();
 
                 try {
-                    PreparedStatement pridej = connectDB.prepareStatement("INSERT INTO surovina (Druh, Vaha, SurovinaID, DodavatelID, SkladID) VALUES ('" + Druh + "', " + Vaha + " , " + id + ", " + 1 + ", " + 1 + ")");
 
+                    PreparedStatement pridej = connectDB.prepareStatement("INSERT INTO surovina (Druh, Vaha, SurovinaID, DodavatelID, SkladID) VALUES ('" + Druh + "', " + Vaha + " , " + id + ", " + 1 + ", " + 1 + ")");
                     pridej.executeUpdate();
 
+                    String triggerPridani = "SELECT num FROM pomocna2 LIMIT 1;";
+                    Statement statement = connectDB.createStatement();
+                    ResultSet queryResult = statement.executeQuery(triggerPridani);
+
+                    while (queryResult.next()) {
+                        if (queryResult.getInt(1) == 1) {
+                            lblSurovinaStatus.setText("Polozka uspesne pridana");
+                            lblSurovinaStatus.setTextFill(Color.web("#29ae00"));
+                        } else {
+                            lblSurovinaStatus.setTextFill(Color.web("#ff4d4d"));
+                            lblSurovinaStatus.setText("Položku se nepodařilo přidat");
+                        }
+
+                    }
+
+                    // testování přidání suroviny
+/*
                     String zkouskaPridani = "SELECT count(1) FROM surovina WHERE Druh = '" + Druh + "'";
                     Statement statement = connectDB.createStatement();
                     ResultSet queryResult = statement.executeQuery(zkouskaPridani);
@@ -559,10 +574,9 @@ public class MainController implements Initializable {
                         }
 
                     }
+ */
 
                 } catch (Exception e) {
-
-
 
                 }
 
@@ -572,12 +586,9 @@ public class MainController implements Initializable {
                 txtBarcode.setText("");
                 lblID.setText(String.valueOf(idCounter()));
                 txtBarcode.requestFocus();
-                lblSurovinaStatus.setTextFill(Color.web("#29ae00"));
-                lblSurovinaStatus.setText("Polozka uspesne pridana");
 
                 statTable.refresh();
                 vypocetStatistiky();
-
 
             }
 
@@ -587,7 +598,6 @@ public class MainController implements Initializable {
             lblSurovinaStatus.setText("Neznámá položka, zkuste znova");
 
         }
-
 
     }
 
@@ -794,24 +804,34 @@ public class MainController implements Initializable {
 
                     try {
 
-                        CallableStatement myStmt = connectDB.prepareCall("{call vypocetID(?,?,?)}");
+                        CallableStatement myStmt = connectDB.prepareCall("{call vypocetID4(?,?,?)}");
                         myStmt.setString(1, barcodeProdukt);
-                        myStmt.setInt(2, barcodePocet);
-                        myStmt.setInt(3, barcodeSarze);
-/*
-                        myStmt.setString(1, "zkouska");
-                        myStmt.setInt(2, 10);
-                        myStmt.setInt(3, 1);
+                        myStmt.setInt(2, barcodeSarze);
+                        myStmt.setInt(3, barcodePocet);
 
- */
                         myStmt.execute();
-                        System.out.println("Produkt byl uspesne pridan do databaze");
+                        myStmt.close();
+
+                        String triggerPridani = "SELECT num FROM pomocna LIMIT 1;";
+                        Statement statement = connectDB.createStatement();
+                        ResultSet queryResult = statement.executeQuery(triggerPridani);
+
+                        while (queryResult.next()) {
+                            if (queryResult.getInt(1) == 1) {
+                                lblStatus.setText("Položka úspěšně přidána!");
+                                lblStatus.setTextFill(Color.web("#29ae00"));
+                            } else {
+                                lblStatus.setTextFill(Color.web("#ff4d4d"));
+                                lblStatus.setText("Položku se nepodařilo přidat");
+                            }
+
+                        }
+
 
 
                     }catch (Exception e){
 
                     }
-
 
 
                 } else {
@@ -820,11 +840,26 @@ public class MainController implements Initializable {
                         if (listProduktu.get(i).getVyrobek().equals(barcodeProdukt) && listProduktu.get(i).getSarze() == barcodeSarze) {
 
                             int meziPocet = listProduktu.get(i).getPocet();
-                            listProduktu.get(i).setPocet(meziPocet + barcodePocet);
+                            int vypocet = meziPocet + barcodePocet;
+                            listProduktu.get(i).setPocet(vypocet);
                             produktTable.refresh();
                             kontrola = true;
                             lblStatus.setText("Položka úspěšně přidána!");
                             lblStatus.setTextFill(Color.web("#29ae00"));
+
+                            DatabaseConnection connectNow = new DatabaseConnection();
+                            Connection connectDB = connectNow.getConnection();
+
+                            try {
+
+                                PreparedStatement uprav = connectDB.prepareStatement("UPDATE produkt SET Pocet = '" + vypocet + "' WHERE Nazev = '" + listProduktu.get(i).getVyrobek() + "'AND Sarze = '" + listProduktu.get(i).getSarze() + "'");
+                                uprav.executeUpdate();
+
+
+                            }catch (Exception e){
+
+                            }
+
 
                             break;
 
@@ -836,27 +871,21 @@ public class MainController implements Initializable {
                         DatabaseConnection connectNow = new DatabaseConnection();
                         Connection connectDB = connectNow.getConnection();
 
-                        try {
-                            PreparedStatement pridej = connectDB.prepareStatement("INSERT INTO surovina (Druh, Vaha, SurovinaID, DodavatelID, SkladID) VALUES ('" + Druh + "', " + Vaha + " , " + id + ", " + 1 + ", " + 1 + ")");
+                            try {
 
-                            pridej.executeUpdate();
+                                CallableStatement myStmt = connectDB.prepareCall("{call vypocetID4(?,?,?)}");
+                                myStmt.setString(1, barcodeProdukt);
+                                myStmt.setInt(2, barcodeSarze);
+                                myStmt.setInt(3, barcodePocet);
 
-                            String zkouskaPridani = "SELECT count(1) FROM surovina WHERE Druh = '" + Druh + "'";
-                            Statement statement = connectDB.createStatement();
-                            ResultSet queryResult = statement.executeQuery(zkouskaPridani);
+                                myStmt.execute();
+                                myStmt.close();
+                                System.out.println("Produkt byl uspesne pridan do databaze");
 
-                            while (queryResult.next()) {
-                                if (queryResult.getInt(1) > 0) {
-                                    System.out.println("Polozka uspesne pridana");
-                                } else {
-                                    System.out.println("Pridani polozky se nezdarilo");
-                                }
+
+                            }catch (Exception e){
 
                             }
-
-                        } catch (Exception e) {
-
-                        }
 
                         lblStatus.setText("Položka úspěšně přidána!");
                         lblStatus.setTextFill(Color.web("#29ae00"));
@@ -900,13 +929,49 @@ public class MainController implements Initializable {
 
                 } else if (odebiranyProdukt.getPocet() - pocetKodebrani == 0){
                     listProduktu.remove(odebiranyProdukt);
+
+                    DatabaseConnection connectNow = new DatabaseConnection();
+                    Connection connectDB = connectNow.getConnection();
+
+                    String odebiranyNazev = odebiranyProdukt.getVyrobek();
+                    int odebiranyPocet = odebiranyProdukt.getPocet();
+                    int odebiranaSarze = odebiranyProdukt.getSarze();
+
+                    try {
+
+                        PreparedStatement odeber = connectDB.prepareStatement("DELETE FROM produkt WHERE Nazev = '" + odebiranyNazev + "' AND Pocet = '" + odebiranyPocet + "'AND Sarze = '" + odebiranaSarze + "'");
+                        odeber.executeUpdate();
+
+                    } catch (Exception e){
+
+                    }
+
+
                 } else {
-                    odebiranyProdukt.setPocet(odebiranyProdukt.getPocet() - pocetKodebrani);
+
+                    int vyslednyPocet = odebiranyProdukt.getPocet() - pocetKodebrani;
+                    odebiranyProdukt.setPocet(vyslednyPocet);
                     produktTable.refresh();
+
+                    DatabaseConnection connectNow = new DatabaseConnection();
+                    Connection connectDB = connectNow.getConnection();
+
+                    String upravenyNazev = odebiranyProdukt.getVyrobek();
+                    int upravenaSarze = odebiranyProdukt.getSarze();
+
+
+                    try {
+
+                        PreparedStatement uprav = connectDB.prepareStatement("UPDATE produkt SET Pocet = '" + vyslednyPocet + "' WHERE Nazev = '" + upravenyNazev + "'AND Sarze = '" + upravenaSarze + "'");
+                        uprav.executeUpdate();
+
+                    } catch (Exception e){
+
+                    }
+
                 }
 
                 txtOdebiranyPocet.setText("");
-
             }
 
         }
@@ -975,9 +1040,7 @@ public class MainController implements Initializable {
                     txtSearchProduct.setText("");
 
                     break;
-
                 }
-
             }
 
         } else if (txtSearchSarze.getText().isEmpty()){
@@ -1027,8 +1090,6 @@ public class MainController implements Initializable {
 
         }
 
-
-
     }
 
     public void addUser(){
@@ -1037,13 +1098,17 @@ public class MainController implements Initializable {
         String userLastName = "";
         String userEmail = "";
         Long userTelephone;
+        String username = "";
+        String password = "";
 
-        if (!txtUserName.getText().isEmpty() && !txtUserLastname.getText().isEmpty() && !txtEmail.getText().isEmpty() && !txtTelephone.getText().isEmpty()){
+        if (!txtUserName.getText().isEmpty() && !txtUserLastname.getText().isEmpty() && !txtEmail.getText().isEmpty() && !txtTelephone.getText().isEmpty() && !txtUsername.getText().isEmpty() && !txtPassword.getText().isEmpty()){
             try {
                 userName = txtUserName.getText();
                 userLastName = txtUserLastname.getText();
-                userEmail = txtUserLastname.getText();
+                userEmail = txtEmail.getText();
                 userTelephone = Long.valueOf(txtTelephone.getText());
+                username = txtUsername.getText();
+                password = txtPassword.getText();
 
                 lblUserStatus.setText("Uživatel úspěšně přidán!");
                 lblUserStatus.setTextFill(Color.web("#29ae00"));
@@ -1052,6 +1117,33 @@ public class MainController implements Initializable {
                 txtUserLastname.setText("");
                 txtEmail.setText("");
                 txtTelephone.setText("");
+                txtUsername.setText("");
+                txtPassword.setText("");
+
+                DatabaseConnection connectNow = new DatabaseConnection();
+                Connection connectDB = connectNow.getConnection();
+
+                try {
+
+                    CallableStatement myStmt = connectDB.prepareCall("{call vypocetIDZamestnance(?,?,?,?,?,?)}");
+
+                    myStmt.setString(1,userName );
+                    myStmt.setString(2,userLastName );
+                    myStmt.setString(3,userEmail );
+                    myStmt.setLong(4,userTelephone );
+                    myStmt.setString(5,username );
+                    myStmt.setString(6,password );
+
+
+                    myStmt.execute();
+                    myStmt.close();
+                    System.out.println("Zamestnanec byl uspesne pridan do databaze");
+
+
+                }catch (Exception e){
+
+                }
+
 
             } catch (Exception e){
 
@@ -1065,10 +1157,6 @@ public class MainController implements Initializable {
 
     }
 
-
-
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -1078,11 +1166,6 @@ public class MainController implements Initializable {
 
         this.statisticsWindow = new StatisticsWindow();
         updateStatisticsTable();
-
-
-
-
-
 
     }
 

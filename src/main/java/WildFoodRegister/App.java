@@ -28,11 +28,8 @@ public class App extends Application {
 
         stage1.setScene(new Scene(root1));
         stage1.setResizable(false);
-        stage1.setTitle("WildFood login v0.7");
+        stage1.setTitle("WildFood login");
         stage1.show();
-
-
-
 
     }
 }

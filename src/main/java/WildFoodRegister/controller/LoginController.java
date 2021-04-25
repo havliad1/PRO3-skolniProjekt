@@ -1,6 +1,6 @@
 package WildFoodRegister.controller;
 
-import WildFoodRegister.ReadAndWrite.DatabaseConnection;
+import WildFoodRegister.DatabaseConnection.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
