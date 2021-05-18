@@ -20,7 +20,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // načtení login screenu
+
 
         Parent root1 = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
 
@@ -28,7 +28,7 @@ public class App extends Application {
 
         stage1.setScene(new Scene(root1));
         stage1.setResizable(false);
-        stage1.setTitle("WildFood login");
+        stage1.setTitle("WildFood login v1.0");
         stage1.show();
 
     }

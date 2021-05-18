@@ -1,15 +1,17 @@
-package WildFoodRegister.controller;
+package WildFoodRegister.AddonClasses;
 
 public class Produkt {
 
     private String vyrobek;
     private int pocet;
     private int sarze;
+    private int ID;
 
-    public Produkt(String druh,int pocet, int sarze){
+    public Produkt(String druh,int pocet, int sarze, int ID){
         this.vyrobek = druh;
         this.pocet = pocet;
         this.sarze = sarze;
+        this.ID = ID;
 
     }
 
@@ -37,7 +39,13 @@ public class Produkt {
         this.sarze = sarze;
     }
 
+    public int getID() {
+        return ID;
+    }
 
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 }
 
 

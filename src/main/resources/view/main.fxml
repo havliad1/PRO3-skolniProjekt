@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
@@ -22,27 +23,27 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<TabPane nodeOrientation="LEFT_TO_RIGHT" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WildFoodRegister.controller.MainController">
+<TabPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="537.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WildFoodRegister.controllers.MainController">
    <tabs>
       <Tab closable="false" text="Seznam">
          <content>
-            <AnchorPane prefHeight="400.0" prefWidth="477.0" style="-fx-background-color: lightgrey;">
+            <AnchorPane prefHeight="400.0" prefWidth="477.0" style="-fx-background-color: #333333;">
                <children>
-                  <TableView fx:id="wholeTable" layoutX="1.0" layoutY="19.0" prefHeight="362.0" prefWidth="420.0" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="178.0" AnchorPane.topAnchor="19.0">
+                  <TableView fx:id="wholeTable" layoutX="202.0" layoutY="11.0" prefHeight="486.0" prefWidth="482.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="202.0" AnchorPane.rightAnchor="182.0" AnchorPane.topAnchor="11.0">
                     <columns>
-                      <TableColumn fx:id="clID" prefWidth="64.0" text="ID" />
-                      <TableColumn fx:id="clDruh" prefWidth="245.0" text="Druh" />
-                        <TableColumn fx:id="clVaha" prefWidth="110.0" text="Váha (Kg)" />
+                      <TableColumn fx:id="clID" prefWidth="94.0" text="ID" />
+                      <TableColumn fx:id="clDruh" prefWidth="269.0" text="Druh" />
+                        <TableColumn fx:id="clVaha" prefWidth="115.0" text="Váha (Kg)" />
                     </columns>
                   </TableView>
-                  <VBox layoutX="422.0" layoutY="20.0" prefHeight="361.0" prefWidth="177.0" style="-fx-background-color: grey; -fx-border-color: black;" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="422.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="20.0">
+                  <VBox layoutX="684.0" layoutY="10.0" prefHeight="487.0" prefWidth="181.0" style="-fx-background-color: grey; -fx-border-color: black;" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="684.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
                      <children>
                         <TextField fx:id="txtRemoveBarcode" alignment="CENTER" prefHeight="0.0" prefWidth="135.0" promptText="čárový kód">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" top="10.0" />
                            </VBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" onMouseClicked="#removeWithBarcode" text="Vyhledat čárovým kódem">
+                        <Button mnemonicParsing="false" onMouseClicked="#searchWithBarcode" text="Vyhledat čárovým kódem">
                            <VBox.margin>
                               <Insets left="13.0" top="11.0" />
                            </VBox.margin>
@@ -56,16 +57,37 @@
                            <VBox.margin>
                               <Insets left="15.0" right="15.0" top="10.0" />
                            </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
                         </Text>
+                        <Button fx:id="logoffButton" mnemonicParsing="false" onAction="#odhlasit" prefHeight="17.0" prefWidth="163.0" text="Odhlásit">
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="8.0" right="8.0" top="170.0" />
+                           </VBox.margin>
+                        </Button>
                         <Separator prefWidth="200.0">
                            <VBox.margin>
-                              <Insets top="100.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </Separator>
-                        <Button mnemonicParsing="false" onMouseClicked="#odeber" prefHeight="31.0" prefWidth="121.0" style="-fx-background-color: #ff4d4d; -fx-border-color: black;" text="Odebrat" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" onMouseClicked="#odeber" prefHeight="31.0" prefWidth="121.0" style="-fx-background-color: #ff4d4d;" text="Odebrat" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets left="30.0" right="30.0" top="15.0" />
                            </VBox.margin>
@@ -78,6 +100,13 @@
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.250980406999588" green="0.21960784494876862" blue="0.21960784494876862" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
                         </Button>
                      </children>
                      <effect>
@@ -88,54 +117,73 @@
                         </InnerShadow>
                      </effect>
                   </VBox>
+                  <VBox layoutY="11.0" prefHeight="487.0" prefWidth="202.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="11.0">
+                     <children>
+                        <ImageView fitHeight="405.0" fitWidth="202.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/etiketa.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
          </content>
       </Tab>
       <Tab closable="false" text="StatistikaSurovin">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #333333;">
                <children>
-                  <TableView fx:id="statTable" layoutX="30.0" layoutY="12.0" prefHeight="375.0" prefWidth="529.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
+                  <TableView fx:id="statTable" layoutX="279.0" layoutY="14.0" prefHeight="405.0" prefWidth="559.0" AnchorPane.bottomAnchor="89.0" AnchorPane.leftAnchor="279.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="11.0">
                     <columns>
-                      <TableColumn fx:id="statDruh" editable="false" prefWidth="401.0" text="Druh" />
-                      <TableColumn fx:id="statVaha" editable="false" prefWidth="136.0" text="Váha (Kg)" />
+                      <TableColumn fx:id="statDruh" editable="false" prefWidth="394.0" text="Druh" />
+                      <TableColumn fx:id="statVaha" editable="false" prefWidth="181.0" text="Váha (Kg)" />
                     </columns>
                   </TableView>
-                  <Label alignment="CENTER" layoutX="36.0" layoutY="333.0" prefHeight="25.0" prefWidth="190.0" style="-fx-border-color: black;" text="Počet veškerých surovin:">
+                  <Label alignment="CENTER" layoutX="279.0" layoutY="431.0" prefHeight="25.0" prefWidth="179.0" style="-fx-border-color: #cccccc;" text="Počet veškerých surovin:" textFill="#fcfcfc">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="36.0" layoutY="364.0" prefHeight="25.0" prefWidth="190.0" style="-fx-border-color: black;" text="Počet veškerých produktů:">
+                  <Label alignment="CENTER" layoutX="279.0" layoutY="462.0" prefHeight="25.0" prefWidth="180.0" style="-fx-border-color: #cccccc;" text="Počet veškerých produktů:" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblVysledneProdukty" alignment="CENTER" layoutX="234.0" layoutY="364.0" prefHeight="25.0" prefWidth="92.0" style="-fx-border-color: black;">
+                  <Label fx:id="lblVysledneProdukty" alignment="CENTER" layoutX="470.0" layoutY="462.0" prefHeight="25.0" prefWidth="65.0" style="-fx-border-color: #cccccc;" textFill="WHITE">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblVysledneSuroviny" alignment="CENTER" layoutX="234.0" layoutY="333.0" prefHeight="25.0" prefWidth="92.0" style="-fx-border-color: black;">
+                  <Label fx:id="lblVysledneSuroviny" alignment="CENTER" layoutX="470.0" layoutY="431.0" prefHeight="25.0" prefWidth="65.0" style="-fx-border-color: #cccccc;" textFill="WHITE">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="482.0" fitWidth="247.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="11.0" AnchorPane.topAnchor="11.0">
+                     <image>
+                        <Image url="@../Images/etiketa.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="63.0" fitWidth="239.0" layoutX="585.0" layoutY="425.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Images/Zviratka.png" />
+                     </image>
+                  </ImageView>
                </children></AnchorPane>
         </content>
       </Tab>
       <Tab closable="false" text="Produkty">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #333333;">
                <children>
-                  <TableView fx:id="produktTable" prefHeight="362.0" prefWidth="420.0">
+                  <TableView fx:id="produktTable" layoutX="205.0" layoutY="9.0" prefHeight="491.0" prefWidth="482.0" AnchorPane.bottomAnchor="11.0" AnchorPane.topAnchor="11.0">
                      <columns>
-                        <TableColumn fx:id="clVyrobek" prefWidth="260.0" text="Výrobek" />
-                        <TableColumn fx:id="clPocet" prefWidth="85.0" text="Počet" />
-                        <TableColumn fx:id="clSarze" prefWidth="74.0" text="Šarže" />
+                        <TableColumn fx:id="clVyrobek" prefWidth="307.0" text="Výrobek" />
+                        <TableColumn fx:id="clPocet" prefWidth="90.0" text="Počet" />
+                        <TableColumn fx:id="clSarze" prefWidth="83.0" text="Šarže" />
                      </columns>
                   </TableView>
-                  <VBox layoutX="420.0" prefHeight="400.0" prefWidth="177.0" style="-fx-background-color: grey; -fx-border-color: black;">
+                  <VBox layoutX="687.0" layoutY="9.0" prefHeight="491.0" prefWidth="179.0" style="-fx-background-color: grey; -fx-border-color: black;">
                      <children>
                         <TextField fx:id="txtSearchProduct" alignment="CENTER" promptText="čárový kód">
                            <VBox.margin>
@@ -154,7 +202,7 @@
                         </Text>
                         <Button mnemonicParsing="false" onAction="#searchProduct" text="Vyhledat čárovým kódem">
                            <VBox.margin>
-                              <Insets left="13.0" top="10.0" />
+                              <Insets left="13.0" top="100.0" />
                            </VBox.margin>
                         </Button>
                         <Separator prefWidth="200.0">
@@ -167,13 +215,23 @@
                               <Insets left="40.0" right="40.0" top="10.0" />
                            </VBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" onAction="#removeProduct" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #ff4d4d; -fx-border-color: black;" text="Odebrat" textAlignment="CENTER">
+                        <Button mnemonicParsing="false" onAction="#removeProduct" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #ff4d4d;" text="Odebrat" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets left="40.0" right="40.0" top="10.0" />
                            </VBox.margin>
                            <padding>
                               <Insets left="10.0" right="10.0" />
                            </padding>
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.250980406999588" green="0.21960784494876862" blue="0.21960784494876862" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
                         </Button>
                      </children>
                      <effect>
@@ -184,6 +242,15 @@
                         </InnerShadow>
                      </effect>
                   </VBox>
+                  <VBox layoutX="-3.0" layoutY="9.0" prefHeight="487.0" prefWidth="210.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="11.0">
+                     <children>
+                        <ImageView fitHeight="386.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/etiketa.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
         </content>
@@ -192,7 +259,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
                <children>
-                  <Button layoutX="402.0" layoutY="45.0" mnemonicParsing="false" onMouseClicked="#addMeat" prefHeight="80.0" prefWidth="155.0" style="-fx-border-color: green;" text="Přidat">
+                  <Button layoutX="682.0" layoutY="100.0" mnemonicParsing="false" onMouseClicked="#addMeat" prefHeight="80.0" prefWidth="155.0" text="Přidat">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -206,50 +273,50 @@
                            </light>
                         </Lighting>
                      </effect></Button>
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="47.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="ID">
+                  <Label alignment="CENTER" layoutX="306.0" layoutY="82.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="ID">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="85.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Druh">
+                  <Label alignment="CENTER" layoutX="306.0" layoutY="120.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Druh">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="121.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Váha">
+                  <Label alignment="CENTER" layoutX="306.0" layoutY="156.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Váha">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <TextField fx:id="txtDruh" layoutX="132.0" layoutY="81.0" prefHeight="28.0" prefWidth="206.0" style="-fx-border-color: black;" />
-                  <TextField fx:id="txtVaha" layoutX="132.0" layoutY="117.0" prefHeight="28.0" prefWidth="206.0" style="-fx-border-color: black;" />
-                  <Separator layoutX="-1.0" layoutY="166.0" prefHeight="1.0" prefWidth="599.0" />
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="17.0" prefWidth="311.0" style="-fx-border-color: grey; -fx-background-color: white;" text="Manuální přidání položky">
+                  <TextField fx:id="txtDruh" alignment="CENTER" layoutX="414.0" layoutY="116.0" prefHeight="28.0" prefWidth="206.0" promptText="Název položky" style="-fx-border-color: black;" />
+                  <TextField fx:id="txtVaha" alignment="CENTER" layoutX="414.0" layoutY="152.0" prefHeight="28.0" prefWidth="206.0" promptText="Váha položky" style="-fx-border-color: black;" />
+                  <Separator layoutX="286.0" layoutY="205.0" prefHeight="1.0" prefWidth="599.0" />
+                  <Label alignment="CENTER" layoutX="304.0" layoutY="24.0" prefHeight="28.0" prefWidth="340.0" style="-fx-border-color: grey; -fx-background-color: white;" text="Manuální přidání položky">
                      <font>
                         <Font name="System Bold Italic" size="12.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="181.0" prefHeight="17.0" prefWidth="311.0" style="-fx-border-color: grey; -fx-background-color: white;" text="Automatické přidání položky">
+                  <Label alignment="CENTER" layoutX="304.0" layoutY="216.0" prefHeight="28.0" prefWidth="340.0" style="-fx-border-color: grey; -fx-background-color: white;" text="Automatické přidání položky">
                      <font>
                         <Font name="System Bold Italic" size="12.0" />
                      </font>
                   </Label>
-                  <Text layoutX="25.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Označte prosím textové pole níže a oskenujte čárový kód pomocí čtečky. Pokud jste se skenováním spokojeni, stiskněte tlačítko Přidat" wrappingWidth="262.13671875" />
-                  <TextField fx:id="txtBarcode" alignment="CENTER" layoutX="25.0" layoutY="273.0" onKeyPressed="#BarcodeToText" prefHeight="25.0" prefWidth="315.0" promptText="Označit pro oskenování" />
-                  <Label fx:id="lblDruh" alignment="CENTER" layoutX="118.0" layoutY="308.0" prefHeight="36.0" prefWidth="225.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
+                  <Text layoutX="306.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Označte prosím textové pole níže a oskenujte čárový kód pomocí čtečky. Pokud jste se skenováním spokojeni, stiskněte tlačítko Přidat" wrappingWidth="335.13671875" />
+                  <TextField fx:id="txtBarcode" alignment="CENTER" layoutX="305.0" layoutY="328.0" onKeyPressed="#BarcodeToText" prefHeight="25.0" prefWidth="315.0" promptText="Označit pro oskenování" />
+                  <Label fx:id="lblDruh" alignment="CENTER" layoutX="398.0" layoutY="363.0" prefHeight="36.0" prefWidth="225.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
                      <font>
                         <Font size="20.0" />
                      </font></Label>
-                  <Label fx:id="lblVaha" alignment="CENTER" layoutX="118.0" layoutY="347.0" prefHeight="37.0" prefWidth="225.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
+                  <Label fx:id="lblVaha" alignment="CENTER" layoutX="398.0" layoutY="402.0" prefHeight="37.0" prefWidth="225.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
                      <font>
                         <Font size="20.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="308.0" prefHeight="36.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Druh:">
+                  <Label alignment="CENTER" layoutX="304.0" layoutY="363.0" prefHeight="36.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Druh:">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="348.0" prefHeight="36.0" prefWidth="84.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Váha:">
+                  <Label alignment="CENTER" layoutX="304.0" layoutY="403.0" prefHeight="36.0" prefWidth="84.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Váha:">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Button layoutX="402.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#addBarcodeMeat" prefHeight="80.0" prefWidth="155.0" style="-fx-border-color: green;" text="Přidat">
+                  <Button layoutX="682.0" layoutY="359.0" mnemonicParsing="false" onMouseClicked="#addBarcodeMeat" prefHeight="80.0" prefWidth="155.0" text="Přidat">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -263,21 +330,35 @@
                            </light>
                         </Lighting>
                      </effect></Button>
-                  <Label fx:id="lblID" alignment="CENTER" contentDisplay="CENTER" layoutX="132.0" layoutY="43.0" prefHeight="28.0" prefWidth="25.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" textAlignment="CENTER">
+                  <Label fx:id="lblID" alignment="CENTER" contentDisplay="CENTER" layoutX="414.0" layoutY="78.0" prefHeight="28.0" prefWidth="25.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="447.0" layoutY="344.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Status:">
+                  <Label alignment="CENTER" layoutX="306.0" layoutY="468.0" prefHeight="19.0" prefWidth="67.0" style="-fx-border-color: black; -fx-background-color: lightgrey;" text="Status:">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblSurovinaStatus" alignment="CENTER" layoutX="373.0" layoutY="362.0" prefHeight="12.0" prefWidth="214.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
+                  <Label fx:id="lblSurovinaStatus" alignment="CENTER" layoutX="389.0" layoutY="467.0" prefHeight="22.0" prefWidth="447.0" style="-fx-border-color: black; -fx-background-color: lightgrey;">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
                   </Label>
+                  <VBox layoutY="15.0" prefHeight="480.0" prefWidth="288.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="578.0" AnchorPane.topAnchor="11.0">
+                     <children>
+                        <ImageView fitHeight="488.0" fitWidth="346.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/etiketa.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </VBox.margin>
+                        </ImageView>
+                     </children></VBox>
+                  <Separator layoutX="289.0" layoutY="12.0" prefHeight="5.0" prefWidth="576.0" AnchorPane.leftAnchor="289.0" AnchorPane.topAnchor="9.0" />
+                  <Separator layoutX="289.0" layoutY="493.0" prefHeight="3.0" prefWidth="596.0" />
+                  <Separator layoutX="288.0" layoutY="456.0" prefHeight="3.0" prefWidth="597.0" />
                </children></AnchorPane>
         </content>
       </Tab>
@@ -285,26 +366,26 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="144.0" layoutY="14.0" prefHeight="17.0" prefWidth="311.0" style="-fx-border-color: grey; -fx-background-color: white;" text="Automatické přidání položky">
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="403.0" layoutY="14.0" prefHeight="28.0" prefWidth="340.0" style="-fx-border-color: grey; -fx-background-color: white;" text="Automatické přidání položky">
                      <font>
                         <Font name="System Bold Italic" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtProductBarcode" alignment="CENTER" layoutX="127.0" layoutY="126.0" onKeyPressed="#scanProduct" prefHeight="27.0" prefWidth="331.0" promptText="Označit pro oskenování" style="-fx-border-color: black;" />
-                  <TextField fx:id="txtSarze" alignment="CENTER" layoutX="127.0" layoutY="163.0" prefHeight="25.0" prefWidth="222.0" promptText="Doplňte šarži" style="-fx-border-color: black;" />
-                  <Label alignment="CENTER" layoutX="17.0" layoutY="164.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Šarže:">
+                  <TextField fx:id="txtProductBarcode" alignment="CENTER" layoutX="411.0" layoutY="130.0" onKeyPressed="#scanProduct" prefHeight="27.0" prefWidth="331.0" promptText="Označit pro oskenování" style="-fx-border-color: black;" />
+                  <TextField fx:id="txtSarze" alignment="CENTER" layoutX="411.0" layoutY="167.0" prefHeight="27.0" prefWidth="329.0" promptText="Doplňte šarži" style="-fx-border-color: black;" />
+                  <Label alignment="CENTER" layoutX="301.0" layoutY="168.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Šarže:">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="17.0" layoutY="198.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Počet:">
+                  <Label alignment="CENTER" layoutX="301.0" layoutY="202.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Počet:">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtPocet" alignment="CENTER" layoutX="127.0" layoutY="197.0" prefHeight="25.0" prefWidth="222.0" promptText="Doplňte počet" style="-fx-border-color: black;" />
-                  <Text layoutX="18.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Označte prosím textové pole níže a oskenujte čárový kód pomocí čtečky. V kolonce &quot;Produkt&quot; se zobrazí oskenovaná položka. Pokud jste se skenováním spokojeni, doplňte počet a šarži produktu a stiskněte tlačítko Přidat" wrappingWidth="565.13671875" />
-                  <Button layoutX="405.0" layoutY="175.0" mnemonicParsing="false" onAction="#addProductWithBarcode" prefHeight="80.0" prefWidth="155.0" style="-fx-border-color: green;" text="Přidat">
+                  <TextField fx:id="txtPocet" alignment="CENTER" layoutX="411.0" layoutY="201.0" prefHeight="27.0" prefWidth="329.0" promptText="Doplňte počet" style="-fx-border-color: black;" />
+                  <Text layoutX="304.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Označte prosím textové pole níže a oskenujte čárový kód pomocí čtečky. V kolonce &quot;Produkt&quot; se zobrazí oskenovaná položka. Pokud jste se skenováním spokojeni, doplňte počet a šarži produktu a stiskněte tlačítko Přidat" wrappingWidth="538.13671875" />
+                  <Button layoutX="339.0" layoutY="323.0" mnemonicParsing="false" onAction="#addProductWithBarcode" prefHeight="58.0" prefWidth="477.0" style="-fx-border-color: green;" text="Přidat">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -319,204 +400,161 @@
                         </Lighting>
                      </effect>
                   </Button>
-                  <Label alignment="CENTER" layoutX="16.0" layoutY="294.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Produkt:">
+                  <Label alignment="CENTER" layoutX="300.0" layoutY="261.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Produkt:">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblProdukt" alignment="CENTER" layoutX="127.0" layoutY="294.0" prefHeight="25.0" prefWidth="331.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
+                  <Label fx:id="lblProdukt" alignment="CENTER" layoutX="411.0" layoutY="261.0" prefHeight="25.0" prefWidth="406.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="17.0" layoutY="127.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Čárový kód:">
+                  <Label alignment="CENTER" layoutX="301.0" layoutY="131.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Čárový kód:">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Separator layoutX="1.0" layoutY="325.0" prefHeight="5.0" prefWidth="599.0" />
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="349.0" prefHeight="25.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Status:">
+                  <Separator layoutX="259.0" layoutY="408.0" prefHeight="5.0" prefWidth="599.0" />
+                  <Label alignment="CENTER" layoutX="304.0" layoutY="419.0" prefHeight="40.0" prefWidth="85.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Status:">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblStatus" alignment="CENTER" layoutX="128.0" layoutY="349.0" prefHeight="25.0" prefWidth="326.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" textFill="#29ae00">
+                  <Label fx:id="lblStatus" alignment="CENTER" layoutX="417.0" layoutY="419.0" prefHeight="40.0" prefWidth="402.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" textFill="#29ae00">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
                   </Label>
-                  <Separator layoutX="-8.0" layoutY="278.0" prefHeight="5.0" prefWidth="615.0" />
+                  <Separator layoutX="251.0" layoutY="241.0" prefHeight="5.0" prefWidth="615.0" />
+                  <VBox layoutY="15.0" prefHeight="487.0" prefWidth="289.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="578.0" AnchorPane.topAnchor="11.0">
+                     <children>
+                        <ImageView fitHeight="488.0" fitWidth="346.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/etiketa.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets left="16.0" right="15.0" />
+                           </VBox.margin>
+                        </ImageView>
+                     </children>
+                  </VBox>
+                  <Separator layoutX="288.0" layoutY="294.0" prefHeight="4.0" prefWidth="578.0" />
+                  <Separator layoutX="287.0" layoutY="465.0" prefHeight="6.0" prefWidth="571.0" />
                </children></AnchorPane>
          </content>
       </Tab>
-      <Tab fx:id="registrationTab" text="Registrace uzivatele">
+      <Tab fx:id="registrationTab" text="Registrace položek">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #333333 #333333;">
                <children>
-                  <Label alignment="CENTER" layoutX="76.0" layoutY="14.0" prefHeight="17.0" prefWidth="441.0" text="Registrace uživatele" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="10.0">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="38.0" layoutY="72.0" prefHeight="29.0" prefWidth="82.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Jméno:" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="470.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="50.0" layoutY="108.0" prefHeight="29.0" prefWidth="81.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Příjmení:" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="471.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="50.0" layoutY="143.0" prefHeight="29.0" prefWidth="81.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Tel. číslo" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="471.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="50.0" layoutY="178.0" prefHeight="29.0" prefWidth="80.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Email" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="472.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="txtUserName" alignment="CENTER" layoutX="144.0" layoutY="71.0" prefHeight="29.0" prefWidth="326.0" promptText="Jméno" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="132.0" AnchorPane.topAnchor="71.0" />
-                  <TextField fx:id="txtUserLastname" alignment="CENTER" layoutX="144.0" layoutY="108.0" prefHeight="29.0" prefWidth="325.0" promptText="Příjmení" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="133.0" />
-                  <TextField fx:id="txtTelephone" alignment="CENTER" layoutX="144.0" layoutY="143.0" prefHeight="29.0" prefWidth="325.0" promptText="Telefonní číslo" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="133.0" />
-                  <TextField fx:id="txtEmail" alignment="CENTER" layoutX="144.0" layoutY="178.0" prefHeight="29.0" prefWidth="325.0" promptText="Emailová adresa" AnchorPane.leftAnchor="144.0" AnchorPane.rightAnchor="133.0" />
-                  <Separator layoutX="-7.0" layoutY="44.0" prefHeight="9.0" prefWidth="618.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Label alignment="CENTER" layoutX="50.0" layoutY="337.0" prefHeight="29.0" prefWidth="79.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Status:">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblUserStatus" alignment="CENTER" layoutX="144.0" layoutY="337.0" prefHeight="29.0" prefWidth="320.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Separator layoutX="8.0" layoutY="311.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button layoutX="494.0" layoutY="323.0" mnemonicParsing="false" onAction="#addUser" prefHeight="64.0" prefWidth="89.0" text="Přidat" AnchorPane.leftAnchor="494.0" AnchorPane.rightAnchor="19.0">
-                     <effect>
-                        <Lighting>
-                           <bumpInput>
-                              <Shadow />
-                           </bumpInput>
-                           <light>
-                              <Light.Distant />
-                           </light>
-                        </Lighting>
-                     </effect>
-                  </Button>
-                  <Label alignment="CENTER" layoutX="50.0" layoutY="213.0" prefHeight="29.0" prefWidth="80.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Username" AnchorPane.leftAnchor="50.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="51.0" layoutY="249.0" prefHeight="29.0" prefWidth="80.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Heslo" AnchorPane.leftAnchor="51.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="txtUsername" alignment="CENTER" layoutX="145.0" layoutY="213.0" prefHeight="29.0" prefWidth="325.0" promptText="Uživatelské jméno" />
-                  <TextField fx:id="txtPassword" alignment="CENTER" layoutX="145.0" layoutY="249.0" prefHeight="29.0" prefWidth="325.0" promptText="Heslo" />
-               </children>
-            </AnchorPane>
-        </content>
-      </Tab>
-      <Tab closable="false">
-         <graphic>
-            <ImageView fitHeight="27" fitWidth="27" nodeOrientation="INHERIT">
-               <image>
-                  <Image url="@../Images/uzivatel.png" />
-               </image>
-            </ImageView>
-         </graphic>
-
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: lightgrey;">
-               <children>
-                  <Pane layoutX="26.0" layoutY="63.0" prefHeight="326.0" prefWidth="560.0" style="-fx-background-color: white; -fx-border-color: grey;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                  <Pane layoutX="21.0" layoutY="14.0" prefHeight="484.0" prefWidth="836.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                      <children>
-                        <Label layoutX="15.0" layoutY="20.0" prefHeight="30.0" prefWidth="80.0" text="Jméno:">
+                        <Label layoutX="438.0" layoutY="8.0" text="Registrace suroviny" underline="true">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblJmeno" layoutX="110.0" layoutY="20.0" prefHeight="30.0" prefWidth="400.0">
+                        <Label layoutX="278.0" layoutY="51.0" prefHeight="17.0" prefWidth="65.0" text="Název:">
                            <font>
-                              <Font name="System Italic" size="18.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="15.0" layoutY="60.0" prefHeight="30.0" prefWidth="80.0" text="Příjmení:">
+                        <Label layoutX="278.0" layoutY="84.0" prefHeight="27.0" prefWidth="97.0" text="Čárový kód:">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="15.0" layoutY="100.0" prefHeight="30.0" prefWidth="80.0" text="Tel. číslo:">
+                        <Separator layoutX="241.0" layoutY="111.0" prefHeight="15.0" prefWidth="589.0" />
+                        <TextField fx:id="txtRegSurNazev" alignment="CENTER" layoutX="392.0" layoutY="51.0" prefHeight="25.0" prefWidth="304.0" promptText="Celý název položky" />
+                        <TextField fx:id="txtRegSurKod" alignment="CENTER" layoutX="392.0" layoutY="84.0" prefHeight="25.0" prefWidth="304.0" promptText="čárový kód položky" />
+                        <Label layoutX="436.0" layoutY="126.0" text="Registrace produktu" underline="true">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label layoutX="15.0" layoutY="140.0" prefHeight="30.0" prefWidth="80.0" text="Email:">
+                        <Label layoutX="278.0" layoutY="165.0" prefHeight="17.0" prefWidth="65.0" text="Název:">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblDoplnek" layoutX="14.0" layoutY="190.0" prefHeight="30.0" prefWidth="108.0">
+                        <Label layoutX="278.0" layoutY="199.0" prefHeight="27.0" prefWidth="97.0" text="Čárový kód:">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblPrijmeni" layoutX="110.0" layoutY="60.0" prefHeight="30.0" prefWidth="400.0">
+                        <TextField fx:id="txtRegProNazev" alignment="CENTER" layoutX="390.0" layoutY="165.0" prefHeight="25.0" prefWidth="304.0" promptText="Celý název položky" />
+                        <TextField fx:id="txtRegProKod" alignment="CENTER" layoutX="390.0" layoutY="199.0" prefHeight="25.0" prefWidth="304.0" promptText="čárový kód položky" />
+                        <Separator layoutX="241.0" layoutY="234.0" prefHeight="15.0" prefWidth="595.0" />
+                        <Button layoutX="726.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#registraceSuroviny" prefHeight="61.0" prefWidth="73.0" text="Přidat">
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect></Button>
+                        <Button layoutX="726.0" layoutY="161.0" mnemonicParsing="false" onMouseClicked="#registraceProduktu" prefHeight="61.0" prefWidth="73.0" text="Přidat">
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect></Button>
+                        <Label alignment="CENTER" layoutX="280.0" layoutY="249.0" prefHeight="27.0" prefWidth="97.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;" text="Status:">
                            <font>
-                              <Font name="System Italic" size="18.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblTelCislo" layoutX="110.0" layoutY="100.0" prefHeight="30.0" prefWidth="400.0">
+                        <Label fx:id="lblRegistraceStatus" alignment="CENTER" contentDisplay="CENTER" layoutX="392.0" layoutY="249.0" prefHeight="29.0" prefWidth="408.0" style="-fx-border-color: black; -fx-background-color: #e6e6e6;">
                            <font>
-                              <Font name="System Italic" size="18.0" />
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblEmail" layoutX="110.0" layoutY="140.0" prefHeight="30.0" prefWidth="401.0">
+                        <VBox layoutY="-1.0" prefHeight="480.0" prefWidth="242.0" style="-fx-background-color: black;">
+                           <children>
+                              <ImageView fitHeight="555.0" fitWidth="242.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/etiketa.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <padding>
+                              <Insets bottom="11.0" top="11.0" />
+                           </padding>
+                        </VBox>
+                        <TableView fx:id="registerTable" layoutX="254.0" layoutY="320.0" prefHeight="148.0" prefWidth="362.0" style="-fx-border-color: #333333;">
+                          <columns>
+                            <TableColumn fx:id="clPolozka" prefWidth="242.0" text="Položka" />
+                            <TableColumn fx:id="clCarovyKod" prefWidth="118.0" text="Čárový kód" />
+                          </columns>
+                        </TableView>
+                        <Separator layoutX="241.0" layoutY="278.0" prefHeight="15.0" prefWidth="595.0" />
+                        <Button layoutX="660.0" layoutY="442.0" mnemonicParsing="false" onAction="#odeberRegistraci" prefHeight="27.0" prefWidth="133.0" style="-fx-background-color: #ff4d4d;" text="Odebrat">
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.250980406999588" green="0.21960784494876862" blue="0.21960784494876862" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
                            <font>
-                              <Font name="System Italic" size="18.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
-                        </Label>
-                        <Label fx:id="lblDoplnek2" layoutX="111.0" layoutY="190.0" prefHeight="30.0" prefWidth="401.0">
-                           <font>
-                              <Font name="System Italic" size="18.0" />
-                           </font>
-                        </Label>
-                        <Separator layoutX="1.0" layoutY="170.0" prefHeight="14.0" prefWidth="565.0" />
-                        <Label fx:id="lblDoplnek3" layoutX="14.0" layoutY="230.0" prefHeight="30.0" prefWidth="108.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lblDoplnek4" layoutX="122.0" layoutY="230.0" prefHeight="30.0" prefWidth="401.0">
-                           <font>
-                              <Font name="System Italic" size="18.0" />
-                           </font>
-                        </Label>
+                        </Button>
+                        <Text layoutX="637.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tabulka obsahuje veškeré typy surovin / produktů s jejich přiřazenými čárovými kódy. Zobrazené položky slouží k přiřazení názvu a kódu při evidenci nových položek. Pokud již není potřeba využívat danou položku, můžete jí smazat pomocí tlačítka &quot;Odebrat&quot;." wrappingWidth="198.13671875" />
+                        <ComboBox fx:id="chooseBox" layoutX="254.0" layoutY="290.0" onAction="#zobrazeniRegistraci" prefWidth="150.0" />
                      </children>
                   </Pane>
-                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="157.0" layoutY="13.0" prefHeight="43.0" prefWidth="285.0" text="Uživatel" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="10.0">
-                     <font>
-                        <Font name="Verdana" size="36.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="logoffButton" layoutX="461.0" layoutY="13.0" mnemonicParsing="false" onMouseClicked="#odhlasit" prefHeight="41.0" prefWidth="122.0" text="Odhlásit">
-                     <effect>
-                        <Lighting>
-                           <bumpInput>
-                              <Shadow />
-                           </bumpInput>
-                           <light>
-                              <Light.Distant />
-                           </light>
-                        </Lighting>
-                     </effect>
-                  </Button>
-               </children></AnchorPane>
+               </children>
+            </AnchorPane>
         </content>
       </Tab>
    </tabs>

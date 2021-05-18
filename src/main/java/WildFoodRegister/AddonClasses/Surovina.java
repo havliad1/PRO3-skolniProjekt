@@ -1,4 +1,4 @@
-package WildFoodRegister.controller;
+package WildFoodRegister.AddonClasses;
 
 public class Surovina {
     private int ID;
